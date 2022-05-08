@@ -45,4 +45,4 @@ _Below is an example of how you can instruct your audience on installing and set
 
 ### `to start the project`
 run the script by command :npm start
-![image](https://user-images.githubusercontent.com/65462442/167291531-427ce368-28d2-42d0-a1e5-4a28f81279a2.png)
+
