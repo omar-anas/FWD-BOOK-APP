@@ -1,6 +1,6 @@
 import './Home.css'
 import React, { useState, useEffect } from "react";
-import { getAll, get, update, } from '../../BooksAPI'
+import { getAll, update, } from '../../BooksAPI'
 const Home = () => {
   const [books, setBooks] = useState([]);
   // const [currRead, setCurrRead] = useState([]);
@@ -12,7 +12,7 @@ const Home = () => {
     const res = await update(book,shelf)
     let temp = books;
     
-    temp = temp.filter((elem) => elem.id != book.id)
+    temp = temp.filter((elem) => elem.id !== book.id)
     book.shelf=shelf
     temp.push(book);
     setBooks(temp)
@@ -85,25 +85,7 @@ const Home = () => {
     const getBooks = async () => {
       const res = await getAll()
       setBooks(res);
-      // let currTemp = []
-      // let wantTemp = []
-      // let readTemp = []
-
-      // for (let i = 0; i < res.length; i++) {
-      //   if (res[i].shelf == 'read') {
-      //     readTemp.push(res[i]);
-      //   }
-      //   if (res[i].shelf == 'currentlyReading') {
-      //     currTemp.push(res[i]);
-      //   }
-      //   if (res[i].shelf == 'wantToRead') {
-      //     wantTemp.push(res[i]);
-      //   }
-
-      // }
-      // setRead(readTemp);
-      // setWantRead(wantTemp);
-      // setCurrRead(currTemp);
+      
     }
     getBooks()
   }, [])

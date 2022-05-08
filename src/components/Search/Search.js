@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Search.css'
-import { search, update } from '../../BooksAPI';
+import { search,getAll, update } from '../../BooksAPI';
 
 
 const updateShelf = async (event, book) => {
@@ -29,7 +29,7 @@ const BOOK = ({ book }) => {
                 ></div>
                 <div className="book-shelf-changer">
 
-                    <select onChange={(event) => { updateShelf(event, book) }} value={"none"}>
+                    <select onChange={(event) => { updateShelf(event, book) }} value={book.shelf?book.shelf:"none"}>
                         <option value="none" disabled>
                             Move to...
                         </option>
@@ -53,6 +53,7 @@ const Search = () => {
 
     const [query, setQuery] = useState("");
     const [searchBooks, setSearchBooks] = useState([]);
+    const [mainBooks, setMainBooks] = useState([]);
 
 
     const searchItems = (searchValue) => {
@@ -63,28 +64,50 @@ const Search = () => {
 
 
     useEffect(() => {
+        const getBooks = async () => {
+            const res = await getAll()
+            // console.log(res)
+            setMainBooks(res);
+
+        }
+        getBooks()
+       
+    }, [])
+
+
+
+    useEffect(() => {
        
         const fetchBooks = async () => {
-
-
-
-
-
-
             const res = await search(query);
             if (Array.isArray(res)) {
+              
+                let searchedB = res;
+                let myBooks = mainBooks;
                 
                 
-                setSearchBooks(res);
+
+                //All the books have the no option selected. The correct shelf should be displayed for the book on the search page.
+                for (let i = 0; i < myBooks.length; i++){
+                    for (let j = 0; j < searchedB.length; j++){
+                        if (myBooks[i].title == searchedB[j].title) {
+                            searchedB.splice(j, 1);
+                            searchedB.push(myBooks[i]);
+                        }
+                        
+                    }
+                    
+                }
+
+                console.log(searchedB)
+                setSearchBooks(searchedB);
                 
             } else {
                 console.log("invalid query")
             }
 
-
-
-
         }
+
         const debounceSearch = setTimeout(() => {
             if (query) {
                 fetchBooks()
